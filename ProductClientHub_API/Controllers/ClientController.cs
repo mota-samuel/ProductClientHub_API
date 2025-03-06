@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using ProductClientHub_API.UseCase.Clients.GetAll;
 using ProductClientHub_API.ÙseCase.Clients.Register;
 using ProductClientHub_Communication.Request;
 using ProductClientHub_Communication.Response;
@@ -10,7 +11,7 @@ namespace ProductClientHub_API.Controllers
     public class ClientController : ControllerBase
     {
         [HttpPost]
-        [ProducesResponseType(typeof(ResponseClientJson), StatusCodes.Status201Created)]
+        [ProducesResponseType(typeof(ResponseShortClientJson), StatusCodes.Status201Created)]
         [ProducesResponseType(typeof(ResponseErrorMessageJson), StatusCodes.Status400BadRequest)]
         public IActionResult Register([FromBody]RequestClientJson request)
         {
@@ -22,15 +23,36 @@ namespace ProductClientHub_API.Controllers
         }
 
         [HttpPut]
-        public IActionResult Update()
+        [Route("{id}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(typeof(ResponseErrorMessageJson), StatusCodes.Status404NotFound)]
+        public IActionResult Update([FromRoute] Guid id, [FromBody] RequestClientJson request)
         {
+            var useCase = new UpdateClientsUseCase();
+
+            useCase.Execute(id, request);
+
             return Ok();
         }
 
         [HttpGet]
+        [ProducesResponseType(typeof(ResponseAllClientsJson), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
         public IActionResult GetAll()
         {
-            return Ok();
+            var useCase = new GetAllClientsUseCase();
+
+            var response = useCase.Execute();
+
+            
+            if(response.Clients.Count == 0)
+            {
+                return NoContent();
+            }
+            else
+            {
+                return Ok(response);
+            }
         }
 
         [HttpGet]
