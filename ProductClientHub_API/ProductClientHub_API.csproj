@@ -22,4 +22,8 @@
     <ProjectReference Include="..\ProductClientHub_Exceptions\ProductClientHub_Exceptions.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="UseCase\Products\UpdateProductUseCase\" />
+  </ItemGroup>
+
 </Project>

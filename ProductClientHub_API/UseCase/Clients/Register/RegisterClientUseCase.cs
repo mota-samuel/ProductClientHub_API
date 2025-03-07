@@ -4,44 +4,43 @@ using ProductClientHub_Communication.Request;
 using ProductClientHub_Communication.Response;
 using ProductClientHub_Exceptions.ExceptionsBase;
 
-namespace ProductClientHub_API.ÙseCase.Clients.Register
+namespace ProductClientHub_API.ÙseCase.Clients.Register;
+
+public class RegisterClientUseCase
 {
-    public class RegisterClientUseCase
+    public ResponseShortClientJson Execute(RequestClientJson request)
     {
-        public ResponseShortClientJson Execute(RequestClientJson request)
+        Validate(request);
+
+        var dbContext = new ProductClientHubDbContext();
+        var entity = new Client
         {
-            Validate(request);
+            Name = request.Name,
+            Email = request.Email
+        };
 
-            var dbContext = new ProductClientHubDbContext();
-            var entity = new Client
-            {
-                Name = request.Name,
-                Email = request.Email
-            };
+        dbContext.Clients.Add(entity);
+        dbContext.SaveChanges();
 
-            dbContext.Clients.Add(entity);
-            dbContext.SaveChanges();
-
-            return new ResponseShortClientJson
-            {
-                Name = entity.Name,
-                Id = entity.Id
-            };
-        }
-
-        private void Validate(RequestClientJson request)
+        return new ResponseShortClientJson
         {
+            Name = entity.Name,
+            Id = entity.Id
+        };
+    }
 
-            var validator = new RegisterClientValidator();
+    private void Validate(RequestClientJson request)
+    {
 
-            var result = validator.Validate(request);
+        var validator = new RegisterClientValidator();
 
-            if (!result.IsValid)
-            {
-                var errors = result.Errors.Select(failure => failure.ErrorMessage).ToList();
+        var result = validator.Validate(request);
 
-                throw new ErrorOnValidationException(errors);
-            }
+        if (!result.IsValid)
+        {
+            var errors = result.Errors.Select(failure => failure.ErrorMessage).ToList();
+
+            throw new ErrorOnValidationException(errors);
         }
     }
 }

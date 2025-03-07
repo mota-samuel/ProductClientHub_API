@@ -26,6 +26,7 @@ namespace ProductClientHub_API.Controllers
         [Route("{id}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(typeof(ResponseErrorMessageJson), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(ResponseErrorMessageJson), StatusCodes.Status400BadRequest)]
         public IActionResult Update([FromRoute] Guid id, [FromBody] RequestClientJson request)
         {
             var useCase = new UpdateClientsUseCase();
