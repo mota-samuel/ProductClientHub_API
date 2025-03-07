@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using ProductClientHub_API.ÙseCase.Clients.Register;
 using ProductClientHub_API.UseCase.Products.DeleteProductUseCase;
 using ProductClientHub_API.UseCase.Products.RegisterProductUseCase;
 using ProductClientHub_Communication.Request;

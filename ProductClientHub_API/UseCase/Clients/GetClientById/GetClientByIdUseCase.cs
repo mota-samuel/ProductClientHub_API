@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Query;
 using ProductClientHub_API.Infraestructure;
 using ProductClientHub_Communication.Response;
 using ProductClientHub_Exceptions.ExceptionsBase;
